@@ -116,91 +116,142 @@ plt.show()
 numeric_df = df.select_dtypes(include=['int64', 'float64'])  # Mengambil hanya kolom bertipe numerik (int64 dan float64)
 
 if "No" in numeric_df.columns:       # Jika kolom "No" ada di dataframe (sering berupa nomor urut), kolom ini dihapus, karena tidak relevan dan dapat mengganggu analisis korelasi
+
 numeric_df = numeric_df.drop(columns=["No"])
 
 plt.figure(figsize=(14,10))     # Membuat ukuran figure untuk heatmap
 
 sns.heatmap(                            # Membuat heatmap menggunakan seaborn
+   
     numeric_df.corr(),               # Menghasilkan matriks korelasi antar kolom numerik
+    
     cmap='coolwarm',                # Warna visualisasi (biru = korelasi negatif, merah = positif)
+    
     annot=True,                      # Menampilkan nilai korelasi
+    
     fmt=".2f",                        # Format angka dengan 2 decimal
+    
     linewidth=.5                     # Jarak antar sel pada heatmap
 )
+
 plt.title("Heatmap Korelasi Numerik")
+
 plt.show()
 
 # 3. TREN HARIAN PM2.5
-plt.figure(figsize=(12,6))
-df["PM2.5"].plot(color="steelblue", linewidth=1)
-plt.title("Tren Harian PM2.5", fontsize=14)
-plt.xlabel("Tahun")
-plt.ylabel("Mikrogram per meter kubik µg/m³")
-plt.grid(axis="y", linestyle="--", alpha=0.4)
-plt.tight_layout()
-plt.show()
+plt.figure(figsize=(12,6)) # Membuat canvas figure dengan ukuran 12x6
+
+df["PM2.5"].plot(color="steelblue", linewidth=1)     # Plot tren harian PM2.5 berdasarkan index datetime
+
+plt.title("Tren Harian PM2.5", fontsize=14)       # Menambahkan judul grafik
+
+plt.xlabel("Tahun")    # Menambahkan label sumbu X
+
+plt.ylabel("Mikrogram per meter kubik µg/m³")   # Menambahkan label sumbu Y
+
+plt.grid(axis="y", linestyle="--", alpha=0.4)   # Menambahkan garis grid horizontal agar tren lebih mudah dilihat
+
+plt.tight_layout()  # Mengoptimalkan layout agar tidak terpotong
+
+plt.show()  # Menampilkan grafik
 
 # 4. TREN BULANAN PM2.5
 monthly_avg = df['PM2.5'].resample("ME").mean()   # Rata-rata per bulan
 
-plt.figure(figsize=(15,5))
-monthly_avg.plot(marker='o')
-plt.xlabel("Bulan")
-plt.ylabel("Mikrogram per meter kubik (µg/m³)")
-plt.title("Rata-rata PM2.5 per Bulan")
-plt.show()
+plt.figure(figsize=(15,5))  # Membuat ukuran figure
+
+monthly_avg.plot(marker='o')  # Plot rata-rata bulanan PM2.5 dengan marker bulat
+
+plt.xlabel("Bulan")    # Menambahkan label sumbu X
+
+plt.ylabel("Mikrogram per meter kubik (µg/m³)")    # Menambahkan label sumbu Y
+
+plt.title("Rata-rata PM2.5 per Bulan")     # Judul grafik
+
+plt.show()    # Menampilkan grafik
 
 # 5. TREN TAHUNAN PM2.5
-yearly_avg = df.groupby(df.index.year)['PM2.5'].mean()
+yearly_avg = df.groupby(df.index.year)['PM2.5'].mean() # Menghitung rata-rata PM2.5 berdasarkan tahun
 
-plt.figure(figsize=(15,5))
-yearly_avg.plot(marker='o')
-plt.xlabel("Tahun")
-plt.ylabel("Mikrogram per meter kubik (µg/m³)")
-plt.title("Rata-rata PM2.5 per Tahun")
-plt.grid(axis="y", linestyle="--", alpha=0.5)
-plt.show()
+plt.figure(figsize=(15,5))  # Membuat ukuran figure
+
+yearly_avg.plot(marker='o')    # Plot tren tahunan PM2.5
+
+plt.xlabel("Tahun")    # Menambahkan label sumbu X
+
+plt.ylabel("Mikrogram per meter kubik (µg/m³)")    # Menambahkan label sumbu Y
+
+plt.title("Rata-rata PM2.5 per Tahun")    # Judul grafik
+
+plt.grid(axis="y", linestyle="--", alpha=0.5)    # Menambahkan grid horizontal
+
+plt.show()        # Menampilkan grafik
 
 # 6. ANALISIS MUSIM
-df['month'] = df.index.month           # Tambah kolom bulan
-df['season'] = df['month'].map({       # Mapping bulan → musim
-    12:'Winter', 1:'Winter', 2:'Winter',
-    3:'Spring', 4:'Spring', 5:'Spring',
-    6:'Summer', 7:'Summer', 8:'Summer',
-    9:'Autumn', 10:'Autumn', 11:'Autumn' 
-})
+df['month'] = df.index.month          # Membuat kolom 'month' dari index datetime
 
-plt.figure(figsize=(8,5))
-df.groupby("season")["PM2.5"].mean().plot(kind="bar")
-plt.title("Rata-rata PM2.5 per Musim")
-plt.xlabel("Musim")
-plt.ylabel("Mikrogram per meter kubik (µg/m³)")
-plt.show()
+df['season'] = df['month'].map({       
+   
+    12:'Winter', 1:'Winter', 2:'Winter',
+    
+    3:'Spring', 4:'Spring', 5:'Spring',
+    
+    6:'Summer', 7:'Summer', 8:'Summer',
+    
+    9:'Autumn', 10:'Autumn', 11:'Autumn' 
+})  # Mapping bulan ke musim untuk analisis musiman
+
+plt.figure(figsize=(8,5))    # Membuat ukuran figure
+
+df.groupby("season")["PM2.5"].mean().plot(kind="bar")    # Menghitung dan menampilkan rata-rata PM2.5 per musim dalam bentuk bar chart
+
+plt.title("Rata-rata PM2.5 per Musim")   # Judul grafik
+
+plt.xlabel("Musim")  # Menambahkan label sumbu X
+
+plt.ylabel("Mikrogram per meter kubik (µg/m³)")    # Menambahkan label sumbu Y
+
+plt.show()    # Menampilkan grafik
 
 # 7. CALENDAR HEATMAP PM2.5
-df['day_of_year'] = df.index.dayofyear   # Hari ke- dalam setahun
+df['day_of_year'] = df.index.dayofyear   # Membuat kolom 'day_of_year' untuk menandai hari ke- dalam tahun
 
 calendar = df.pivot_table(
+  
     values="PM2.5",
+    
     index=df.index.year,         # Baris = Tahun
+    
     columns='day_of_year'        # Kolom = Hari ke-
-)
-calendar = calendar.sort_index()
+)  # Membuat pivot table untuk heatmap: Tahun (baris) vs Hari ke- (kolom)
 
-plt.figure(figsize=(18,6))
-sns.heatmap(calendar, cmap='viridis', linewidth=0)
-plt.title("Calendar Heatmap PM2.5")
-plt.xlabel("Hari ke-")
-plt.ylabel("Tahun")
+calendar = calendar.sort_index()    # Mengurutkan index tahun dari kecil ke besar
+
+plt.figure(figsize=(18,6))        # Membuat ukuran figure besar agar heatmap jelas
+
+sns.heatmap(calendar, cmap='viridis', linewidth=0)    # Membuat heatmap calendar PM2.5
+
+plt.title("Calendar Heatmap PM2.5")    # Judul grafik
+
+plt.xlabel("Hari ke-")    # Menambahkan label sumbu X
+
+plt.ylabel("Tahun")    
+
 plt.show()
 
 # 8. PERBANDINGAN ANTAR STASIUN
 station_avg = df.groupby("station")["PM2.5"].mean().sort_values()
 
 plt.figure(figsize=(12,6))
+
 station_avg.plot(kind="bar")
+
 plt.title("Rata-rata PM2.5 per Stasiun")
+
 plt.xlabel("Stasiun")
+
 plt.ylabel("PM2.5")
+
 plt.xticks(rotation=45)
+
 plt.show()
