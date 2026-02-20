@@ -1,10 +1,15 @@
 Dokumentasi Proyek: Analisis Data Kualitas Udara (Air Quality Data Analysis)
 # Import library yang digunakan untuk analisis dan visualisasi
 import pandas as pd          # Mengelola data dalam bentuk tabel (DataFrame)
+
 import numpy as np           # Operasi numerik dan komputasi matematis
+
 import matplotlib.pyplot as plt  # Membuat grafik dan visualisasi
+
 import seaborn as sns        # Visualisasi statistik dengan style lebih informatif
+
 import zipfile               # Untuk mengekstrak file ZIP dataset
+
 import os                    # Navigasi direktori dan pencarian file
 
 # Mengatur style default visualisasi seaborn
@@ -48,7 +53,7 @@ print(df.info())                    # Informasi struktur kolom dan tipe data
 
 print(df.describe())                           # Statistik deskriptif kolom numerik
 
-print("Missing values per column")
+print("Missing values per column")              #Program akan menampilkan tulisan "Missing values per column" di konsol.
 
 print(df.isnull().sum())                                # Jumlah nilai hilang per kolom
 
@@ -97,7 +102,7 @@ plt.figure(figsize=(10,6))
 
 sns.boxplot(data=df[pollutants])    # Membuat boxplot untuk seluruh polutan
 
-plt.title("Distribusi Polutan Utama")
+plt.title("Distribusi Polutan Utama") #Program akan menampilkan tulisan "Distribusi Polutan Utama" di konsol.
 
 plt.xticks(rotation=45)             # Rotasi label agar mudah dibaca
 
@@ -108,19 +113,19 @@ plt.grid(axis="y", linestyle="--", alpha=0.5)
 plt.show()
 
 # 2. HEATMAP KORELASI ANTAR VARIABEL NUMERIK
-numeric_df = df.select_dtypes(include=['int64', 'float64'])  # Ambil kolom numerik
+numeric_df = df.select_dtypes(include=['int64', 'float64'])  # Mengambil hanya kolom bertipe numerik (int64 dan float64)
 
-if "No" in numeric_df.columns:       # Jika ada kolom "No", hapus
-
+if "No" in numeric_df.columns:       # Jika kolom "No" ada di dataframe (sering berupa nomor urut), kolom ini dihapus, karena tidak relevan dan dapat mengganggu analisis korelasi
 numeric_df = numeric_df.drop(columns=["No"])
 
-plt.figure(figsize=(14,10))
-sns.heatmap(
-    numeric_df.corr(),               # Matriks korelasi
-    cmap='coolwarm',
+plt.figure(figsize=(14,10))     # Membuat ukuran figure untuk heatmap
+
+sns.heatmap(                            # Membuat heatmap menggunakan seaborn
+    numeric_df.corr(),               # Menghasilkan matriks korelasi antar kolom numerik
+    cmap='coolwarm',                # Warna visualisasi (biru = korelasi negatif, merah = positif)
     annot=True,                      # Menampilkan nilai korelasi
-    fmt=".2f",
-    linewidth=.5
+    fmt=".2f",                        # Format angka dengan 2 decimal
+    linewidth=.5                     # Jarak antar sel pada heatmap
 )
 plt.title("Heatmap Korelasi Numerik")
 plt.show()
