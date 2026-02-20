@@ -10,10 +10,8 @@ import os                    # Navigasi direktori dan pencarian file
 # Mengatur style default visualisasi seaborn
 sns.set(style="whitegrid")
 
-# ============================================================
-# 1. GATHERING DATA
-# ============================================================
 
+# 1. GATHERING DATA
 # Path lokasi file ZIP dataset
 zip_path = r"C:\Users\aryod\Downloads\Air-quality-dataset.zip"
 
@@ -29,9 +27,12 @@ csv_files = []
 
 # Menelusuri folder hasil ekstraksi untuk mencari seluruh file .csv
 for root, dirs, files in os.walk(extract_dir):
-    for file in files:
-        if file.endswith(".csv"):                 # Jika file berakhiran .csv
-            csv_files.append(os.path.join(root, file))  # Simpan path file
+
+for file in files:
+
+if file.endswith(".csv"):                       # Jika file berakhiran .csv
+
+csv_files.append(os.path.join(root, file))      # Simpan path file
 
 # Membaca seluruh file CSV ke dalam list DataFrame
 df_list = [pd.read_csv(f) for f in csv_files]
@@ -39,19 +40,23 @@ df_list = [pd.read_csv(f) for f in csv_files]
 # Menggabungkan semua DataFrame menjadi satu tabel besar
 df = pd.concat(df_list, ignore_index=True)
 
-# ============================================================
+
 # 2. ASSESSING DATA
-# ============================================================
 
-print(df.info())                # Informasi struktur kolom dan tipe data
-print(df.describe())            # Statistik deskriptif kolom numerik
+
+print(df.info())                    # Informasi struktur kolom dan tipe data
+
+print(df.describe())                           # Statistik deskriptif kolom numerik
+
 print("Missing values per column")
-print(df.isnull().sum())        # Jumlah nilai hilang per kolom
-print("Duplikasi baris:", df.duplicated().sum())   # Jumlah baris duplikat
 
-# ============================================================
+print(df.isnull().sum())                                # Jumlah nilai hilang per kolom
+
+print("Duplikasi baris:", df.duplicated().sum())           # Jumlah baris duplikat
+
+
 # 3. CLEANING DATA
-# ============================================================
+
 
 # Membuat kolom datetime dari kolom year, month, day, hour
 df["datetime"] = pd.to_datetime(df[['year', 'month', 'day', 'hour']], errors='coerce')
@@ -67,37 +72,47 @@ df.fillna(df.median(numeric_only=True), inplace=True)
 
 # Mengisi nilai kosong pada kolom kategorikal dengan nilai mode (yang paling sering muncul)
 cat_cols = df.select_dtypes(include='object').columns
+
 for col in cat_cols:
-    df[col] = df[col].fillna(df[col].mode()[0])
+   
+df[col] = df[col].fillna(df[col].mode()[0])
 
 # Menghapus duplikasi berdasarkan index (datetime)
 df = df[~df.index.duplicated(keep='last')]
 
 # Menampilkan data yang sudah dibersihkan
 print("\nData setelah cleaning:")
+
 print(df.head())
+
 print(df['station'].unique()[:20])   # Menampilkan 20 nama stasiun pertama
 
-# ============================================================
 # 4. EXPLORATORY DATA ANALYSIS (EDA)
-# ============================================================
+
 
 # 1. DISTRIBUSI POLUTAN UTAMA (BOXPLOT)
 pollutants = ["PM2.5", "PM10", "NO2", "SO2", "CO", "O3"]  # Daftar polutan utama
 
 plt.figure(figsize=(10,6))
+
 sns.boxplot(data=df[pollutants])    # Membuat boxplot untuk seluruh polutan
+
 plt.title("Distribusi Polutan Utama")
+
 plt.xticks(rotation=45)             # Rotasi label agar mudah dibaca
+
 plt.yscale("log")                   # Skala log untuk mengatasi outlier
+
 plt.grid(axis="y", linestyle="--", alpha=0.5)
+
 plt.show()
 
 # 2. HEATMAP KORELASI ANTAR VARIABEL NUMERIK
 numeric_df = df.select_dtypes(include=['int64', 'float64'])  # Ambil kolom numerik
 
 if "No" in numeric_df.columns:       # Jika ada kolom "No", hapus
-    numeric_df = numeric_df.drop(columns=["No"])
+
+numeric_df = numeric_df.drop(columns=["No"])
 
 plt.figure(figsize=(14,10))
 sns.heatmap(
