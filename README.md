@@ -261,97 +261,113 @@ plt.show()    # Menampilkan grafik
 # 1. LOAD & CLEANING DATA
 import streamlit as st 
 
-Mengimpor library Streamlit, digunakan untuk membuat UI dashboard interaktif.
+* Mengimpor library Streamlit, digunakan untuk membuat UI dashboard interaktif.
+
 
 import pandas as pd
 
-Mengimpor Pandas, digunakan untuk manipulasi data seperti membaca CSV, cleaning, dan analisis.
+* Mengimpor Pandas, digunakan untuk manipulasi data seperti membaca CSV, cleaning, dan analisis.
+
 
 import matplotlib.pyplot as plt
 
-Mengimpor modul plotting dari Matplotlib, digunakan untuk membuat grafik.
+* Mengimpor modul plotting dari Matplotlib, digunakan untuk membuat grafik.
+
 
 import seaborn as sns
 
-Mengimpor Seaborn, library visualisasi yang lebih estetik untuk grafik statistik.
+* Mengimpor Seaborn, library visualisasi yang lebih estetik untuk grafik statistik.
+
 
 import zipfile
 
-Mengimpor modul zipfile untuk membuka dan mengekstrak file ZIP.
+* Mengimpor modul zipfile untuk membuka dan mengekstrak file ZIP.
+
 
 import requests
 
-Mengimpor Requests, digunakan untuk mengunduh file dari internet.
+* Mengimpor Requests, digunakan untuk mengunduh file dari internet.
+
 
 import io
 
-Mengimpor modul io, digunakan untuk memproses file binary dari request HTTP sebagai input stream.
+* Mengimpor modul io, digunakan untuk memproses file binary dari request HTTP sebagai input stream.
 
-Mengatur layout dashboard
+
+* Mengatur layout dashboard
 st.set_page_config(layout="wide")
 
-Mengatur tampilan Streamlit agar menggunakan layout wide (lebar penuh).
+
+* Mengatur tampilan Streamlit agar menggunakan layout wide (lebar penuh).
 
 sns.set(style="whitegrid")
 
-Mengatur style default Seaborn menjadi whitegrid, sehingga grafik memiliki grid putih yang bersih.
 
-Mengunduh dataset ZIP dari Google Drive
+* Mengatur style default Seaborn menjadi whitegrid, sehingga grafik memiliki grid putih yang bersih.
+
+
+* Mengunduh dataset ZIP dari Google Drive
 url = "https://drive.google.com/uc?export=download&id=1qEXlwwNB-L8hfBzK_Jgb2cV9LJaSHAl3"
 
-URL langsung ke file ZIP pada Google Drive.
+
+* URL langsung ke file ZIP pada Google Drive.
 
 response = requests.get(url)
 
-Mengunduh file ZIP dari link Google Drive menggunakan HTTP GET.
+
+* Mengunduh file ZIP dari link Google Drive menggunakan HTTP GET.
 
 z = zipfile.ZipFile(io.BytesIO(response.content))
 
-Membuka file ZIP langsung dari binary stream tanpa menyimpannya ke disk.
 
-Membaca seluruh CSV dalam ZIP
+* Membuka file ZIP langsung dari binary stream tanpa menyimpannya ke disk.
+
+
+* Membaca seluruh CSV dalam ZIP
 df_list = []
 
-Inisialisasi list kosong untuk menampung semua dataframe CSV.
+
+* Inisialisasi list kosong untuk menampung semua dataframe CSV.
 
 for filename in z.namelist():
 
-Loop semua file di dalam ZIP.
+* Loop semua file di dalam ZIP.
 
     if filename.endswith(".csv"):
 
-Memastikan hanya file berformat CSV yang diproses.
+* Memastikan hanya file berformat CSV yang diproses.
 
         df_list.append(pd.read_csv(z.open(filename)))
 
 # Membaca CSV dari ZIP langsung menjadi dataframe dan memasukkannya ke list.
 
-Menggabungkan seluruh dataframe
+* Menggabungkan seluruh dataframe
 df = pd.concat(df_list, ignore_index=True)
 
-Menggabungkan semua dataframe menjadi satu tabel besar.
+* Menggabungkan semua dataframe menjadi satu tabel besar.
 ignore_index=True (memastikan index disusun ulang)
 
 # DATA CLEANING
-Membuat kolom datetime
+
+* Membuat kolom datetime
 df['datetime'] = pd.to_datetime(df[['year','month','day','hour']])
 
-Menggabungkan kolom year, month, day, hour menjadi kolom datetime.
+* Menggabungkan kolom year, month, day, hour menjadi kolom datetime.
 
-Mengurutkan data berdasarkan waktu
+* Mengurutkan data berdasarkan waktu
 df = df.sort_values("datetime")
 
-Mengurutkan baris berdasarkan waktu agar grafik timeseries akurat.
+* Mengurutkan baris berdasarkan waktu agar grafik timeseries akurat.
 
-Menjadikan datetime sebagai index
+* Menjadikan datetime sebagai index
 df.set_index("datetime", inplace=True)
 
-Menjadikan kolom datetime sebagai index, memudahkan resampling time-series.
+* Menjadikan kolom datetime sebagai index, memudahkan resampling time-series.
 
-Mengisi nilai hilang
+* Mengisi nilai hilang
 df = df.fillna(df.median(numeric_only=True))
 
-Mengisi missing values pada kolom numerik menggunakan nilai median agar distribusi tetap stabil.
+* Mengisi missing values pada kolom numerik menggunakan nilai median agar distribusi tetap stabil.
 
 
 
