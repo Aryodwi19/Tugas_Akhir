@@ -370,5 +370,232 @@ df = df.fillna(df.median(numeric_only=True))
 * Mengisi missing values pada kolom numerik menggunakan nilai median agar distribusi tetap stabil.
 
 
+# SIDEBAR FILTER & VISUALISASI
 
+# SIDEBAR FILTER
 
+st.sidebar.header("Filter")
+
+* Menambahkan judul Filter pada panel sidebar di Streamlit.
+
+pollutant = st.sidebar.selectbox("Pilih variabel polusi:",['PM2.5','PM10','NO2','SO2','CO','O3'])
+
+* Membuat dropdown di sidebar untuk memilih jenis polutan yang akan dianalisis.
+
+stations = df['station'].unique().tolist()
+
+*Mengambil seluruh nama stasiun unik dari dataframe lalu mengubahnya menjadi list.
+
+station_selected = st.sidebar.selectbox("Pilih Stasiun:", stations)
+
+* Membuat dropdown kedua di sidebar untuk memilih stasiun pemantau.
+
+df_station = df[df['station'] == station_selected]
+
+* Memfilter dataframe utama sehingga hanya data stasiun yang dipilih yang digunakan.
+
+# HEADER
+
+st.title(" Air Quality Dashboard Beijing")
+
+* Menampilkan judul besar pada halaman aplikasi.
+
+st.write(f"### Stasiun terpilih: **{station_selected}**")
+
+* Menampilkan nama stasiun yang sedang dianalisis.
+
+# TIMESERIES PLOT
+
+st.subheader(f"Tren Waktu: {pollutant} - {station_selected}")
+
+* Menampilkan subjudul grafik tren waktu.
+
+fig, ax = plt.subplots(figsize=(14,5))
+
+* Membuat figure dan axes Matplotlib dengan ukuran 14×5.
+
+df_station[pollutant].plot(ax=ax)
+
+* Memplot grafik timeseries polutan pada stasiun terpilih.
+
+ax.set_title(f"Tren Waktu {pollutant} di Stasiun {station_selected}")
+
+* Menambahkan judul pada grafik.
+
+st.pyplot(fig)
+
+* Menampilkan grafik di Streamlit.
+
+# DISTRIBUTION PLOT
+
+st.subheader(f"Distribusi {pollutant} - {station_selected}")
+
+* Menambahkan subjudul untuk visualisasi distribusi.
+
+fig, ax = plt.subplots(figsize=(7,5))
+
+* Membuat kanvas baru untuk histogram.
+
+sns.histplot(df_station[pollutant], bins=40, kde=True, ax=ax)
+
+* Menampilkan distribusi nilai polutan menggunakan histogram dan kurva KDE.
+
+st.pyplot(fig)
+
+* Menampilkan grafik di halaman.
+
+# KORELASI POLUTAN (Heatmap)
+
+st.subheader(f"Heatmap Korelasi Polutan - {station_selected}")
+
+* Menampilkan subjudul heatmap korelasi.
+
+fig, ax = plt.subplots(figsize=(10,6))
+
+* Membuat kanvas untuk heatmap.
+
+sns.heatmap(df[['PM2.5','PM10','NO2','SO2','CO','O3']].corr(),
+            cmap='coolwarm', annot=True, ax=ax)
+
+* Menghitung korelasi antar kolom polutan
+
+* Menampilkan heatmap dengan warna coolwarm
+
+* Menampilkan nilai korelasi pada setiap sel
+
+st.pyplot(fig)
+
+* Menampilkan heatmap.
+
+# AVERAGE PM2.5 PER BULAN
+
+st.subheader(f"Rata-rata PM2.5 per Bulan - {station_selected}")
+
+* Menampilkan subjudul.
+
+monthly_avg = df_station.groupby(df_station.index.month)['PM2.5'].mean()
+
+* Mengelompokkan data berdasarkan bulan (1–12), lalu menghitung rata-rata PM2.5.
+
+fig, ax = plt.subplots(figsize=(10,5))
+
+* Menyiapkan kanvas grafik.
+
+monthly_avg.plot(marker='o', ax=ax)
+
+* Menampilkan grafik line chart dengan titik penanda di setiap bulan.
+
+ax.set_xlabel("Bulan")
+ax.set_ylabel("PM2.5")
+
+* Menambahkan label sumbu X dan Y.
+
+st.pyplot(fig)
+
+* Menampilkan grafik.
+
+# PERBANDINGAN ANTAR STASIUN (Enhanced)
+
+st.subheader(f"Perbandingan {pollutant} Antar Stasiun (Lebih Mudah Dibaca)")
+
+* Menampilkan subjudul untuk perbandingan seluruh stasiun.
+
+fig, ax = plt.subplots(figsize=(14,6))
+
+* Menyiapkan kanvas besar untuk multi-line chart.
+
+colors = sns.color_palette("tab10", n_colors=len(stations))
+
+* Membuat palet warna otomatis sebanyak jumlah stasiun.
+
+* Loop seluruh stasiun
+for idx, st_name in enumerate(stations):
+
+* Melakukan iterasi untuk setiap stasiun.
+
+    df_temp = df[df['station'] == st_name][pollutant] \
+                .resample('D').mean() \
+                .rolling(7).mean()
+
+* Untuk tiap stasiun:
+
+* Memfilter data
+
+* Resampling menjadi rata-rata harian
+
+* Melakukan smoothing menggunakan rolling 7 hari
+
+    ax.plot(df_temp.index, df_temp.values,
+            label=st_name,
+            linewidth=2,
+            alpha=0.85,
+            color=colors[idx])
+
+* Menambahkan garis ke chart dengan:
+
+* warna berbeda tiap stasiun
+
+* ketebalan 2
+
+* transparansi 0.85
+
+* Setting Grafik
+
+ax.set_title(f"Perbandingan Harian {pollutant} Antar Stasiun (Smoothing 7 hari)")
+
+* Judul grafik.
+
+ax.set_xlabel("Tanggal")
+ax.set_ylabel(pollutant)
+
+* Label sumbu.
+
+ax.legend(title="Stasiun", bbox_to_anchor=(1.05, 1), loc='upper left')
+
+* Menempatkan legenda di luar grafik agar tidak menutupi garis.
+
+ax.grid(True, alpha=0.3)
+
+* Menambahkan grid lembut.
+
+st.pyplot(fig)
+
+* Menampilkan grafik.
+
+# RANKING STASIUN BERDASARKAN POLUTAN
+
+st.subheader(f"Ranking Stasiun berdasarkan rata-rata {pollutant}")
+
+* Menampilkan subjudul ranking.
+
+rank_df = df.groupby("station")[pollutant] \
+            .mean() \
+            .sort_values(ascending=False)
+
+* Mengelompokkan data berdasarkan stasiun
+
+* Mengambil rata-rata polutan
+
+* Mengurutkan dari tertinggi ke terendah
+
+fig, ax = plt.subplots(figsize=(10,5))
+
+* Membuat kanvas grafik barplot.
+
+rank_df.plot(kind="bar", ax=ax)
+
+* Menampilkan ranking dalam bentuk grafik batang.
+
+ax.set_ylabel("Rata-rata Konsentrasi")
+ax.set_xlabel("Stasiun")
+ax.set_title(f"Ranking Stasiun - {pollutant}")
+
+* Menambahkan label dan judul.
+
+plt.xticks(rotation=45)
+
+* Memiringkan label sumbu X agar tidak saling tumpang tindih.
+
+st.pyplot(fig)
+
+* Menampilkan grafik ke Streamlit.
