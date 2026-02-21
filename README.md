@@ -4,9 +4,9 @@ import pandas as pd          # Mengelola data dalam bentuk tabel (DataFrame)
 
 import numpy as np           # Operasi numerik dan komputasi matematis
 
-import matplotlib.pyplot as plt  # Membuat grafik dan visualisasi
+import matplotlib.pyplot as plt  # Membuat grafik dan visualisasi (garis, batang, dll)
 
-import seaborn as sns        # Visualisasi statistik dengan style lebih informatif
+import seaborn as sns         # Visualisasi statistik dengan style lebih informatif (seperti heatmap dan boxplot)
 
 import zipfile               # Untuk mengekstrak file ZIP dataset
 
@@ -235,23 +235,23 @@ plt.title("Calendar Heatmap PM2.5")    # Judul grafik
 
 plt.xlabel("Hari ke-")    # Menambahkan label sumbu X
 
-plt.ylabel("Tahun")    
+plt.ylabel("Tahun")    # Menambahkan label sumbu Y
 
-plt.show()
+plt.show()        # Menampilkan grafik
 
 # 8. PERBANDINGAN ANTAR STASIUN
-station_avg = df.groupby("station")["PM2.5"].mean().sort_values()
+station_avg = df.groupby("station")["PM2.5"].mean().sort_values()  # Menghitung rata-rata PM2.5 per stasiun dan mengurutkannya
 
-plt.figure(figsize=(12,6))
+plt.figure(figsize=(12,6))    # Membuat ukuran figure
 
-station_avg.plot(kind="bar")
+station_avg.plot(kind="bar")    # Plot perbandingan rata-rata PM2.5 antar stasiun dalam bentuk bar chart
 
-plt.title("Rata-rata PM2.5 per Stasiun")
+plt.title("Rata-rata PM2.5 per Stasiun") # Judul grafik
 
-plt.xlabel("Stasiun")
+plt.xlabel("Stasiun")    # Menambahkan label sumbu X
 
-plt.ylabel("PM2.5")
+plt.ylabel("PM2.5")    # Menambahkan label sumbu Y
 
-plt.xticks(rotation=45)
+plt.xticks(rotation=45) # Rotasi label agar terbaca
 
-plt.show()
+plt.show()    # Menampilkan grafik
