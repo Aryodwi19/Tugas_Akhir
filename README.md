@@ -372,7 +372,7 @@ df = df.fillna(df.median(numeric_only=True))
 
 # SIDEBAR FILTER & VISUALISASI
 
-# SIDEBAR FILTER
+# 2. SIDEBAR FILTER
 
 st.sidebar.header("Filter")
 
@@ -394,7 +394,7 @@ df_station = df[df['station'] == station_selected]
 
 * Memfilter dataframe utama sehingga hanya data stasiun yang dipilih yang digunakan.
 
-# HEADER
+# 3. HEADER
 
 st.title(" Air Quality Dashboard Beijing")
 
@@ -404,7 +404,7 @@ st.write(f"### Stasiun terpilih: **{station_selected}**")
 
 * Menampilkan nama stasiun yang sedang dianalisis.
 
-# TIMESERIES PLOT
+# 4. TIME SERIES PLOT
 
 st.subheader(f"Tren Waktu: {pollutant} - {station_selected}")
 
@@ -426,7 +426,7 @@ st.pyplot(fig)
 
 * Menampilkan grafik di Streamlit.
 
-# DISTRIBUTION PLOT
+# 5. DISTRIBUTION PLOT
 
 st.subheader(f"Distribusi {pollutant} - {station_selected}")
 
@@ -444,7 +444,7 @@ st.pyplot(fig)
 
 * Menampilkan grafik di halaman.
 
-# KORELASI POLUTAN (Heatmap)
+# 6. KORELASI POLUTAN (Heatmap)
 
 st.subheader(f"Heatmap Korelasi Polutan - {station_selected}")
 
@@ -467,7 +467,7 @@ st.pyplot(fig)
 
 * Menampilkan heatmap.
 
-# AVERAGE PM2.5 PER BULAN
+# 7. RATA-RATA PM2.5 PER BULAN
 
 st.subheader(f"Rata-rata PM2.5 per Bulan - {station_selected}")
 
@@ -494,7 +494,7 @@ st.pyplot(fig)
 
 * Menampilkan grafik.
 
-# PERBANDINGAN ANTAR STASIUN (Enhanced)
+# 8. PERBANDINGAN ANTAR STASIUN (Enhanced)
 
 st.subheader(f"Perbandingan {pollutant} Antar Stasiun (Lebih Mudah Dibaca)")
 
@@ -562,7 +562,7 @@ st.pyplot(fig)
 
 * Menampilkan grafik.
 
-# RANKING STASIUN BERDASARKAN POLUTAN
+# 9. RANKING STASIUN BERDASARKAN POLUTAN
 
 st.subheader(f"Ranking Stasiun berdasarkan rata-rata {pollutant}")
 
