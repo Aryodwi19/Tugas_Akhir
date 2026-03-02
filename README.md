@@ -15,11 +15,16 @@ Proyek ini bertujuan untuk menganalisis data kualitas udara (Air Quality) dari b
 * station: nama stasiun pemantau
 
 ## 2. Pertanyaan Bisnis (Business Questions)
-* Apa saja penyebab utama meningkatnya kadar Pm 2.5?
+* 1. Bagaimana pola dan tren konsentrasi PM2.5 di setiap stasiun pemantauan kualitas udara di Beijing pada periode 2013-2017?
 
-* Bagaimana perkembangan PM2. 5 dari waktu kewaktu (harian , bulanan dan musiman )?
+* 2. Bagaimana distribusi PM2.5 serta polutan lain (PM10, NO2, SO2, CO, O3) selama tahun 2013-2017??
 
-* Bagaimana perubahan rata-rata konsentrasi PM2.5 di seluruh stasiun pemantauan di Beijing pada periode 2013–2017, dan apakah terjadi tren penurunan yang konsisten dari tahun ke tahun?
+* 3. Bagaimana korelasi antara PM2.5 dengan polutan lainnya?
+
+* 4. Stasiun mana yang memiliki rata-rata konsentrasi PM2.5 tertinggi dan terendah, dan bagaimana perbandingan polutan antar stasiun selama periode pengamatan (2013-2017)?
+
+* Tujuan Mengidentifikasi wilayah dengan tingkat polusi tertinggi, memahami faktor musiman, dan menentukan arah kebijakan pengendalian emisi jangka pendek maupun jangka panjang.
+
 
 ## 3. Ringkasan Data Cleaning
 Ringkasan tahapan pembersihan data:
