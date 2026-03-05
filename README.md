@@ -1,111 +1,65 @@
-# Air Quality Data Analysis Dashboard
+Air Quality Analysis Dashboard: Beijing (2013-2017)
+Proyek ini bertujuan untuk melakukan analisis mendalam mengenai kualitas udara di 12 stasiun pemantauan utama di Beijing selama periode 2013 hingga 2017. Analisis difokuskan pada polutan utama seperti PM2.5, PM10, SO2, NO2, CO, dan O3 untuk memberikan wawasan yang berguna bagi kebijakan pengendalian emisi.
 
-## Gambaran Proyek
-Proyek ini bertujuan untuk menganalisis data kualitas udara (Air Quality) dari berbagai stasiun pemantauan. Analisis berfokus pada tren polutan utama (seperti PM2.5), perbandingan antar stasiun, serta pola musiman/bulanan untuk memahami kondisi kualitas udara secara lebih baik.
+# Pertanyaan Bisnis
+Bagaimana pola dan tren konsentrasi PM2.5 di setiap stasiun pemantauan kualitas udara di Beijing pada periode 2013-2017?
 
-## 1. Dataset
-* Dataset ini memuat data pengukuran kualitas udara dari beberapa stasiun di Beijing. Variabel utama yang tersedia:
-* PM2.5
-* PM10
-* SO₂
-* NO₂
-* CO
-* O₃
-* Informasi waktu: year, month, day, hour
-* station: nama stasiun pemantau
+Bagaimana distribusi PM2.5 serta polutan lain (PM10, NO2, SO2, CO, O3) selama tahun 2013-2017?
 
-## 2. Pertanyaan Bisnis (Business Questions)
-* 1. Bagaimana pola dan tren konsentrasi PM2.5 di setiap stasiun pemantauan kualitas udara di Beijing pada periode 2013-2017?
+Bagaimana korelasi antara PM2.5 dengan polutan lainnya?
 
-* 2. Bagaimana distribusi PM2.5 serta polutan lain (PM10, NO2, SO2, CO, O3) selama tahun 2013-2017??
+Stasiun mana yang memiliki rata-rata konsentrasi PM2.5 tertinggi dan terendah?
 
-* 3. Bagaimana korelasi antara PM2.5 dengan polutan lainnya?
+# Panduan Menjalankan Dashboard
+Ikuti langkah-langkah di bawah ini untuk menjalankan proyek di perangkat lokal Anda dengan aman.
 
-* 4. Stasiun mana yang memiliki rata-rata konsentrasi PM2.5 tertinggi dan terendah, dan bagaimana perbandingan polutan antar stasiun selama periode pengamatan (2013-2017)?
+# 1. Pengaturan Lingkungan (Setting Environment)
+Gunakan virtual environment untuk menghindari konflik versi antar library.
+Menggunakan venv (Bawaan Python):
+# Masuk ke direktori proyek
+cd tugas_akhir
 
-* Tujuan Mengidentifikasi wilayah dengan tingkat polusi tertinggi, memahami faktor musiman, dan menentukan arah kebijakan pengendalian emisi jangka pendek maupun jangka panjang.
+# Membuat virtual environment
+python -m venv venv
 
+# Mengaktifkan environment
+# Windows:
+venv\Scripts\activate
+# macOS/Linux:
+source venv/bin/activate
 
-## 3. Ringkasan Data Cleaning
-Ringkasan tahapan pembersihan data:
-
-* Menggabungkan semua file CSV dari ZIP menjadi satu DataFrame.
-
-* Membuat kolom datetime dari kombinasi year–month–day–hour.
-
-* Menghapus baris dengan datetime yang tidak valid.
-
-* Mengurutkan data berdasarkan waktu dan menjadikan datetime sebagai index.
-
-* Mengisi nilai hilang:
-
-Numerik → median
-
-Kategorikal → mode
-
-* Menghapus baris duplikat berdasarkan index.
-
-
-## 4. Ringkasan Exploratory Data Analysis (EDA)
-
-* Analisis yang dilakukan meliputi:
-
-* Distribusi polutan utama (boxplot).
-
-* Heatmap korelasi antar polutan.
-
-* Tren harian, bulanan, dan tahunan untuk PM2.5.
-
-* Analisis musiman untuk PM2.5.
-
-* Calendar heatmap untuk PM2.5.
-
-* Perbandingan rata-rata polutan antar stasiun.
-
-* Ranking stasiun berdasarkan konsentrasi rata-rata polutan.
-
-* Semua visualisasi ini ditampilkan baik di notebook maupun dashboard Streamlit.
-
-## 5. Dashboard Streamlit
-
-* Dashboard yang dibangun menyediakan fitur:
-
-* Pemilihan stasiun dan polutan melalui sidebar.
-
-* Tren waktu untuk polutan tertentu pada stasiun yang dipilih.
-
-* Distribusi polutan (histogram + KDE).
-
-* Heatmap korelasi antar polutan.
-
-* Rata-rata bulanan PM2.5.
-
-* Perbandingan antar stasiun dengan smoothing 7 hari.
-
-* Ranking stasiun berdasarkan rata-rata polutan.
-
-* Dashboard dirancang agar mudah digunakan dan responsif.
-
-## 6. Cara Menjalankan Dashboard
-1. Instal dependensi
-
-Jika tersedia requirements.txt:
-
+# 2. Instalasi Dependensi
+pip install --upgrade pip
 pip install -r requirements.txt
 
-Jika tidak, install dependensi inti berikut:
+# 3. Menjalankan Aplikasi
+Jalankan dashboard menggunakan perintah berikut:
+streamlit run dashboard/Streamlit_Proyek_Akhir.py
 
-pip install streamlit pandas seaborn matplotlib requests
+# Alur Analisis Data
 
-2. Jalankan aplikasi
+Data Wrangling: Menggabungkan 12 file CSV dari berbagai stasiun pemantauan.
 
-Pastikan file app.py berada di direktori proyek.
+Cleaning: Mengatasi missing values menggunakan metode median (numerik) dan mode (kategorikal), serta penyesuaian indeks datetime.
 
-streamlit run app.py
+EDA: Eksplorasi distribusi polutan dan statistik deskriptif per stasiun.
 
-3. Buka dashboard
+Visualization: Pembuatan grafik tren musiman, heatmap korelasi, dan perbandingan antar stasiun.
 
-Aplikasi akan berjalan otomatis di browser pada:
+# Kesimpulan Utama
+Pola Musiman: Polusi PM2.5 mencapai puncaknya pada Musim Dingin (Desember-Februari) dan berada di titik terendah pada Musim Panas.
 
-http://localhost:8501
+Stasiun Terpolusi: Stasiun Nongzhanguan memiliki rata-rata PM2.5 tertinggi, sementara stasiun Dingling adalah yang terbersih.
 
+Korelasi: Polutan PM2.5, PM10, CO, dan NO2 memiliki korelasi positif yang sangat kuat, menunjukkan sumber emisi yang serupa (kendaraan dan industri).
+
+Pengaruh Angin: Terdapat korelasi negatif antara kecepatan angin (WSPM) dan PM2.5; angin yang lebih kencang membantu menyebarkan polutan.
+
+Profil Penulis
+Nama: Aryo Dwi Haryanto
+Email: aryodwi122@gmail.com
+ID Dicoding: aryo_dwi_h
+
+Email: aryodwi122@gmail.com
+
+ID Dicoding: aryo_dwi_h
