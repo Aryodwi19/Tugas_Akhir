@@ -12,7 +12,7 @@ st.set_page_config(page_title="Air Quality Analysis Dashboard", layout="wide", p
 @st.cache_data
 def load_data():
     # Asumsikan file CSV berada di dalam folder ini
-    data_folder = "C:/Users/aryod/OneDrive/PRSA_Data_20130301-20170228"
+    data_folder = "dataset"
     
     # Jika folder tidak ada, buat dummy data atau beri peringatan
     if not os.path.exists(data_folder):
@@ -205,3 +205,4 @@ elif menu == "Kesimpulan & Saran":
     """)
     
     st.success("Terima kasih telah melihat Dashboard Analisis Kualitas Udara Beijing! 🌍")
+
