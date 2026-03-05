@@ -56,8 +56,11 @@ Korelasi: Polutan PM2.5, PM10, CO, dan NO2 memiliki korelasi positif yang sangat
 Pengaruh Angin: Terdapat korelasi negatif antara kecepatan angin (WSPM) dan PM2.5; angin yang lebih kencang membantu menyebarkan polutan.
 
 Profil Penulis
+
 Nama: Aryo Dwi Haryanto
+
 Email: aryodwi122@gmail.com
+
 ID Dicoding: aryo_dwi_h
 
 Email: aryodwi122@gmail.com
